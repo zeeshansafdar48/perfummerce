@@ -1,15 +1,15 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Jost } from 'next/font/google';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/sonner';
 
-const inter = Inter({ subsets: ['latin'] });
+const jost = Jost({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
-  title: 'Parfum - Premium Fragrances & Perfumes',
-  description: 'Discover the world\'s finest fragrances. From classic elegance to modern sophistication, we bring you the perfect scent for every moment.',
+  title: 'Perfummerce - Premium Fragrances & Perfumes',
+  description: 'Perfummerce is a premium fragrance store that offers a wide range of fragrances for men and women.',
   keywords: 'perfume, fragrance, cologne, eau de parfum, luxury, premium, authentic',
 };
 
@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={jost.className}>
         <Header />
         <main className="min-h-screen">
           {children}
