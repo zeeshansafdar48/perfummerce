@@ -88,7 +88,7 @@ export default async function Home() {
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             Discover Your
-            <span className="block text-rose-400">Perfect Scent</span>
+            <span className="block text-rose-400">Perfect Perfume</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200">
             Explore our curated collection of premium fragrances from the world's finest brands
