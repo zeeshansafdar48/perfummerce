@@ -83,7 +83,7 @@ export const useFilterStore = create<FilterStore>((set) => ({
   category: "",
   brand: "",
   gender: "",
-  priceRange: [0, 1000],
+  priceRange: [0, 10000],
   sortBy: "name",
   searchQuery: "",
   setCategory: (category) => set({ category }),
@@ -97,7 +97,7 @@ export const useFilterStore = create<FilterStore>((set) => ({
       category: "",
       brand: "",
       gender: "",
-      priceRange: [0, 1000],
+      priceRange: [0, 10000],
       sortBy: "name",
       searchQuery: ""
     })

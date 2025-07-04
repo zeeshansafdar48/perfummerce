@@ -11,32 +11,34 @@ import { toast } from 'sonner'
 
 interface ProductCardProps {
   product: any
+  brandName?: string
+  categoryName?: string
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, brandName, categoryName }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem)
 
   const handleAddToCart = () => {
     addItem(product)
     toast.success('Added to cart!', {
-      description: `${product.name} has been added to your cart.`
+      description: `${product?.name} has been added to your cart.`
     })
   }
 
-  const discountPercentage = product.comparePrice
-    ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
+  const discountPercentage = product?.comparePrice
+    ? Math.round(((product?.comparePrice - product?.price) / product?.comparePrice) * 100)
     : 0
 
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative aspect-square overflow-hidden">
         <Image
-          src={product.images[0] || '/placeholder-perfume.jpg'}
-          alt={product.name}
+          src={product?.images?.[0]?.url || '/placeholder-perfume.jpg'}
+          alt={product?.name}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        {product.featured && (
+        {product?.featured && (
           <Badge className="absolute top-2 left-2 bg-rose-600 hover:bg-rose-700">
             Featured
           </Badge>
@@ -71,38 +73,38 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Badge variant="secondary" className="text-xs">
-              {product.brand.name}
+              {brandName}
             </Badge>
             <Badge variant="outline" className="text-xs">
-              {product.gender}
+              {product?.gender}
             </Badge>
           </div>
 
-          <Link href={`/products/${product.slug}`}>
+          <Link href={`/products/${product?.slug}`}>
             <h3 className="font-semibold text-gray-900 hover:text-rose-600 transition-colors cursor-pointer line-clamp-1">
-              {product.name}
+              {product?.name}
             </h3>
           </Link>
 
           <p className="text-sm text-gray-600 line-clamp-2">
-            {product.description}
+            {product?.description}
           </p>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <span className="text-lg font-bold text-gray-900">
-                ${product.price.toFixed(2)}
+                ${product?.price.toFixed(2)}
               </span>
-              {product.comparePrice && (
+              {product?.comparePrice && (
                 <span className="text-sm text-gray-500 line-through">
-                  ${product.comparePrice.toFixed(2)}
+                  ${product?.comparePrice.toFixed(2)}
                 </span>
               )}
             </div>
 
             <div className="text-sm text-gray-500">
-              {product.inStock ? (
-                <span className="text-green-600">In Stock ({product.stock})</span>
+              {product?.stock > 0 ? (
+                <span className="text-green-600">In Stock ({product?.stock})</span>
               ) : (
                 <span className="text-red-600">Out of Stock</span>
               )}

@@ -18,7 +18,7 @@ interface ProductFiltersProps {
 export function ProductFilters({ categories, brands }: ProductFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [priceRange, setPriceRange] = useState([0, 1000])
+  const [priceRange, setPriceRange] = useState([0, 10000])
 
   const currentCategory = searchParams.get('category') || ''
   const currentBrand = searchParams.get('brand') || ''
@@ -83,7 +83,7 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
               <div className="flex flex-wrap gap-2">
                 {currentCategory && (
                   <Badge variant="secondary" className="flex items-center gap-1">
-                    Category: {categories.find(c => c.slug === currentCategory)?.name}
+                    Category: {categories.find(c => c.name === currentCategory)?.name}
                     <X
                       className="h-3 w-3 cursor-pointer"
                       onClick={() => updateFilter('category', '')}
@@ -92,7 +92,7 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
                 )}
                 {currentBrand && (
                   <Badge variant="secondary" className="flex items-center gap-1">
-                    Brand: {brands.find(b => b.slug === currentBrand)?.name}
+                    Brand: {brands.find(b => b.name === currentBrand)?.name}
                     <X
                       className="h-3 w-3 cursor-pointer"
                       onClick={() => updateFilter('brand', '')}
@@ -137,8 +137,9 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
 
           <Separator />
 
+          {/* TODO: In Next Phase - Category Filter*/}
           {/* Category Filter */}
-          <div>
+          {/* <div>
             <h3 className="font-medium mb-3">Category</h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
@@ -154,12 +155,12 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
               {categories.map((category) => (
                 <div key={category.id} className="flex items-center space-x-2">
                   <Checkbox
-                    id={`category-${category.slug}`}
-                    checked={currentCategory === category.slug}
-                    onCheckedChange={() => updateFilter('category', category.slug)}
+                    id={`category-${category.name}`}
+                    checked={currentCategory === category.name}
+                    onCheckedChange={() => updateFilter('category', category.name)}
                   />
                   <label
-                    htmlFor={`category-${category.slug}`}
+                    htmlFor={`category-${category.name}`}
                     className="text-sm cursor-pointer"
                   >
                     {category.name}
@@ -169,7 +170,7 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
             </div>
           </div>
 
-          <Separator />
+          <Separator /> */}
 
           {/* Brand Filter */}
           <div>
@@ -188,12 +189,12 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
               {brands.map((brand) => (
                 <div key={brand.id} className="flex items-center space-x-2">
                   <Checkbox
-                    id={`brand-${brand.slug}`}
-                    checked={currentBrand === brand.slug}
-                    onCheckedChange={() => updateFilter('brand', brand.slug)}
+                    id={`brand-${brand.name}`}
+                    checked={currentBrand === brand.name}
+                    onCheckedChange={() => updateFilter('brand', brand.name)}
                   />
                   <label
-                    htmlFor={`brand-${brand.slug}`}
+                    htmlFor={`brand-${brand.name}`}
                     className="text-sm cursor-pointer"
                   >
                     {brand.name}
@@ -212,7 +213,7 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
               <Slider
                 value={priceRange}
                 onValueChange={setPriceRange}
-                max={1000}
+                max={10000}
                 step={10}
                 className="w-full"
               />
