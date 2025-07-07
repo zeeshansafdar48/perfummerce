@@ -4,23 +4,12 @@ import { ProductReviews } from '@/components/products/product-reviews'
 import { ProductCard } from '@/components/ui/product-card'
 import { fetchProducts } from '@/lib/supabase/products'
 import { notFound } from 'next/navigation'
-// import dbConnect from '@/lib/mongodb' // Commented out for dummy data
 
 interface ProductPageProps {
   params: { slug: string }
 }
 
 export async function generateMetadata({ params }: ProductPageProps) {
-  const categories = [
-    { id: 'cat1', name: 'Floral', slug: 'floral' },
-    { id: 'cat2', name: 'Woody', slug: 'woody' },
-    { id: 'cat3', name: 'Citrus', slug: 'citrus' },
-  ];
-  const brands = [
-    { id: 'brand1', name: 'Chanel', slug: 'chanel' },
-    { id: 'brand2', name: 'Dior', slug: 'dior' },
-    { id: 'brand3', name: 'Gucci', slug: 'gucci' },
-  ];
   const products = await fetchProducts();
   const product = products.find(p => p.slug === params.slug);
   if (!product) {
