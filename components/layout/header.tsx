@@ -16,9 +16,9 @@ export function Header() {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Products', href: '/products' },
-    { name: 'Men', href: '/products?gender=MEN' },
-    { name: 'Women', href: '/products?gender=WOMEN' },
-    { name: 'Unisex', href: '/products?gender=UNISEX' },
+    // { name: 'Men', href: '/products?gender=MEN' },
+    // { name: 'Women', href: '/products?gender=WOMEN' },
+    // { name: 'Unisex', href: '/products?gender=UNISEX' },
   ]
 
   const handleSearch = (e: React.FormEvent) => {
@@ -77,8 +77,8 @@ export function Header() {
               <Button variant="ghost" size="sm">
                 <ShoppingBag className="h-5 w-5" />
                 {totalItems > 0 && (
-                  <Badge 
-                    variant="destructive" 
+                  <Badge
+                    variant="destructive"
                     className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
                   >
                     {totalItems}
@@ -138,8 +138,8 @@ export function Header() {
                   <ShoppingBag className="h-5 w-5 mr-2" />
                   Cart
                   {totalItems > 0 && (
-                    <Badge 
-                      variant="destructive" 
+                    <Badge
+                      variant="destructive"
                       className="ml-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
                     >
                       {totalItems}

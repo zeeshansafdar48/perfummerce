@@ -1,74 +1,16 @@
-// import dbConnect from '@/lib/mongodb' // Commented out for dummy data
-// import Product from '@/models/Product'
-// import Category from '@/models/Category'
-// await dbConnect() // Commented out for dummy data
 import { ProductCard } from '@/components/ui/product-card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { ArrowRight, Star, Truck, Shield, Headphones } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { fetchProducts } from '@/lib/supabase/products'
+import { fetchCategories } from '@/lib/supabase/categories'
 
 export default async function Home() {
-  // Dummy data for demo/testing only
-  const categories = [
-    { id: 'cat1', name: 'Floral', slug: 'floral' },
-    { id: 'cat2', name: 'Woody', slug: 'woody' },
-    { id: 'cat3', name: 'Citrus', slug: 'citrus' },
-  ];
-  const brands = [
-    { id: 'brand1', name: 'Chanel', slug: 'chanel' },
-    { id: 'brand2', name: 'Dior', slug: 'dior' },
-    { id: 'brand3', name: 'Gucci', slug: 'gucci' },
-  ];
-  const products = [
-    {
-      id: 'prod1',
-      name: 'Chanel No. 5',
-      slug: 'chanel-no-5',
-      description: 'Classic floral fragrance.',
-      price: 120,
-      images: ['https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg'],
-      category: categories[0],
-      brand: brands[0],
-      gender: 'WOMEN',
-      inStock: true,
-      stock: 10,
-      featured: true,
-      createdAt: new Date(),
-    },
-    {
-      id: 'prod2',
-      name: 'Dior Sauvage',
-      slug: 'dior-sauvage',
-      description: 'Woody aromatic fragrance.',
-      price: 110,
-      images: ['https://images.pexels.com/photos/461382/pexels-photo-461382.jpeg'],
-      category: categories[1],
-      brand: brands[1],
-      gender: 'MEN',
-      inStock: true,
-      stock: 8,
-      featured: true,
-      createdAt: new Date(),
-    },
-    {
-      id: 'prod3',
-      name: 'Gucci Bloom',
-      slug: 'gucci-bloom',
-      description: 'Rich white floral fragrance.',
-      price: 105,
-      images: ['https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg'],
-      category: categories[0],
-      brand: brands[2],
-      gender: 'WOMEN',
-      inStock: true,
-      stock: 5,
-      featured: false,
-      createdAt: new Date(),
-    },
-  ];
+  const products = await fetchProducts();
+  const categories = await fetchCategories();
   const featuredProducts = products.filter(p => p.featured);
+  const isShowCategorySection = false;
 
   return (
     <div className="min-h-screen">
@@ -147,7 +89,7 @@ export default async function Home() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16">
+      {isShowCategorySection && <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
@@ -160,7 +102,7 @@ export default async function Home() {
             {categories.map((category) => (
               <Link
                 key={category.id}
-                href={`/products?category=${category.slug}`}
+                href={`/products?category=${category.name}`}
                 className="group"
               >
                 <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -179,7 +121,7 @@ export default async function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
