@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { formatCurrency } from '@/lib/currency'
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } = useCartStore()
@@ -56,7 +57,7 @@ export default function CartPage() {
                     </h3>
                     <p className="text-sm text-gray-600">{item?.product?.brand?.name}</p>
                     <p className="text-lg font-bold text-gray-900 mt-1">
-                      ${item?.product?.price?.toFixed(2)}
+                      {formatCurrency(item?.product?.price)}
                     </p>
                   </div>
 
@@ -85,7 +86,7 @@ export default function CartPage() {
 
                   <div className="text-right">
                     <p className="font-bold text-gray-900">
-                      ${(item?.product?.price * item?.quantity).toFixed(2)}
+                      {formatCurrency(item?.product?.price * item?.quantity)}
                     </p>
                     <Button
                       variant="ghost"
@@ -111,17 +112,17 @@ export default function CartPage() {
             <CardContent className="space-y-4">
               <div className="flex justify-between">
                 <span>Subtotal ({getTotalItems()} items)</span>
-                <span>${getTotalPrice().toFixed(2)}</span>
+                <span>{formatCurrency(getTotalPrice())}</span>
               </div>
 
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{getTotalPrice() >= 100 ? 'FREE' : '$9.99'}</span>
+                <span>{getTotalPrice() >= 100 ? 'FREE' : formatCurrency(9.99)}</span>
               </div>
 
               <div className="flex justify-between">
                 <span>Tax</span>
-                <span>${(getTotalPrice() * 0.08).toFixed(2)}</span>
+                <span>{formatCurrency(getTotalPrice() * 0.08)}</span>
               </div>
 
               <Separator />
@@ -129,7 +130,7 @@ export default function CartPage() {
               <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
                 <span>
-                  ${(getTotalPrice() + (getTotalPrice() >= 100 ? 0 : 9.99) + (getTotalPrice() * 0.08)).toFixed(2)}
+                  {formatCurrency(getTotalPrice() + (getTotalPrice() >= 100 ? 0 : 9.99) + (getTotalPrice() * 0.08))}
                 </span>
               </div>
 

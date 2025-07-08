@@ -5,6 +5,7 @@ import { ProductSort } from '@/components/products/product-sort'
 import { fetchProducts } from '@/lib/supabase/products'
 import { fetchCategories } from '@/lib/supabase/categories'
 import { fetchBrands } from '@/lib/supabase/brands'
+import { formatCurrency } from '@/lib/currency'
 
 interface SearchParams {
   category?: string

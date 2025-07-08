@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { Star, ShoppingCart, Heart, Truck, Shield, RotateCcw } from 'lucide-react'
 import { useCartStore } from '@/lib/store'
 import { toast } from 'sonner'
+import { formatCurrency } from '@/lib/currency'
 
 interface ProductInfoProps {
   product: {
@@ -23,6 +24,11 @@ interface ProductInfoProps {
         name: string
       }
     }[]
+    price: number
+    comparePrice?: number
+    stock?: number
+    gender?: string
+    description?: string
   }
 }
 
@@ -81,12 +87,12 @@ export function ProductInfo({ product }: ProductInfoProps) {
       <div className="space-y-2">
         <div className="flex items-center gap-4">
           <span className="text-3xl font-bold text-gray-900">
-            ${product?.price?.toFixed(2)}
+            {formatCurrency(product?.price)}
           </span>
           {product?.comparePrice && (
             <div className="flex items-center gap-2">
               <span className="text-xl text-gray-500 line-through">
-                ${product?.comparePrice?.toFixed(2)}
+                {formatCurrency(product?.comparePrice)}
               </span>
               <Badge className="bg-green-100 text-green-800">
                 Save {discountPercentage}%
@@ -130,7 +136,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             className="border rounded-md px-3 py-2"
             disabled={!product?.stock}
           >
-            {[...Array(Math.min(product?.stock, 10))].map((_, i) => (
+            {[...Array(Math.min(product?.stock ?? 0, 10))].map((_, i) => (
               <option key={i + 1} value={i + 1}>
                 {i + 1}
               </option>
@@ -163,7 +169,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <Truck className="h-5 w-5 text-rose-600" />
-            <span className="text-sm">Free shipping on orders over $100</span>
+            <span className="text-sm">Free shipping on orders over {formatCurrency(100)}</span>
           </div>
           <div className="flex items-center gap-3">
             <Shield className="h-5 w-5 text-rose-600" />

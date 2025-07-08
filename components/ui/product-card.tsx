@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { ShoppingCart, Heart } from 'lucide-react'
 import { useCartStore } from '@/lib/store'
 import { toast } from 'sonner'
+import { formatCurrency } from '@/lib/currency'
 
 interface ProductCardProps {
   product: any
@@ -93,11 +94,11 @@ export function ProductCard({ product, brandName, categoryName }: ProductCardPro
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <span className="text-lg font-bold text-gray-900">
-                ${product?.price.toFixed(2)}
+                {formatCurrency(product?.price)}
               </span>
               {product?.comparePrice && (
                 <span className="text-sm text-gray-500 line-through">
-                  ${product?.comparePrice.toFixed(2)}
+                  {formatCurrency(product?.comparePrice)}
                 </span>
               )}
             </div>

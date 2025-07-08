@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { X, Filter } from 'lucide-react'
+import { formatCurrency } from '@/lib/currency'
 
 interface ProductFiltersProps {
   categories: any[]
@@ -218,8 +219,8 @@ export function ProductFilters({ categories, brands }: ProductFiltersProps) {
                 className="w-full"
               />
               <div className="flex justify-between text-sm text-gray-600">
-                <span>${priceRange[0]}</span>
-                <span>${priceRange[1]}</span>
+                <span>{formatCurrency(priceRange[0])}</span>
+                <span>{formatCurrency(priceRange[1])}</span>
               </div>
               <Button
                 variant="outline"

@@ -16,6 +16,7 @@ import { toast } from 'sonner'
 import { Truck, CreditCard } from 'lucide-react'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/currency'
 
 const checkoutSchema = z.object({
   customerName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -286,7 +287,7 @@ export default function CheckoutPage() {
                         {item.quantity}x
                       </Badge>
                       <span className="text-sm font-medium">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        {formatCurrency(item.product.price * item.quantity)}
                       </span>
                     </div>
                   ))}
@@ -298,24 +299,24 @@ export default function CheckoutPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal ({getTotalItems()} items)</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>{formatCurrency(subtotal)}</span>
                   </div>
                   
                   <div className="flex justify-between">
                     <span>Shipping</span>
-                    <span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
+                    <span>{shipping === 0 ? 'FREE' : formatCurrency(shipping)}</span>
                   </div>
                   
                   <div className="flex justify-between">
                     <span>Tax</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>{formatCurrency(tax)}</span>
                   </div>
                   
                   <Separator />
                   
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>{formatCurrency(total)}</span>
                   </div>
                 </div>
 
