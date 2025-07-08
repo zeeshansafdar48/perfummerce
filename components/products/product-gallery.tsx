@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface ProductGalleryProps {
-  images: string[]
+  images: { url: string }[]
   productName: string
 }
 
@@ -22,7 +22,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   }
 
   if (images.length === 0) {
-    images = ['/placeholder-perfume.jpg']
+    images = [{ url: '/placeholder-perfume.jpg' }]
   }
 
   return (
@@ -30,13 +30,13 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
       {/* Main Image */}
       <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
         <Image
-          src={images[currentIndex]}
+          src={images[currentIndex]?.url}
           alt={`${productName} - Image ${currentIndex + 1}`}
           fill
           className="object-cover"
           priority
         />
-        
+
         {images.length > 1 && (
           <>
             <Button
@@ -57,15 +57,14 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             </Button>
           </>
         )}
-        
+
         {images.length > 1 && (
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {images.map((_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentIndex ? 'bg-white' : 'bg-white/50'
-                }`}
+                className={`w-2 h-2 rounded-full transition-colors ${index === currentIndex ? 'bg-white' : 'bg-white/50'
+                  }`}
                 onClick={() => setCurrentIndex(index)}
               />
             ))}
@@ -79,13 +78,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
           {images.map((image, index) => (
             <button
               key={index}
-              className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
-                index === currentIndex ? 'border-rose-500' : 'border-gray-200'
-              }`}
+              className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${index === currentIndex ? 'border-rose-500' : 'border-gray-200'
+                }`}
               onClick={() => setCurrentIndex(index)}
             >
               <Image
-                src={image}
+                src={image?.url}
                 alt={`${productName} thumbnail ${index + 1}`}
                 fill
                 className="object-cover"

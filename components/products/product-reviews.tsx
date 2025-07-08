@@ -14,19 +14,19 @@ interface ProductReviewsProps {
 export function ProductReviews({ product }: ProductReviewsProps) {
   const [showAllReviews, setShowAllReviews] = useState(false)
 
-  const averageRating = product.reviews.length > 0
-    ? product.reviews.reduce((sum, review) => sum + review.rating, 0) / product.reviews.length
+  const averageRating = product?.reviews?.length > 0
+    ? product.reviews.reduce((sum, review) => sum + review.rating, 0) / product?.reviews?.length
     : 0
 
   const ratingDistribution = [5, 4, 3, 2, 1].map(rating => ({
     rating,
-    count: product.reviews.filter(review => review.rating === rating).length,
-    percentage: product.reviews.length > 0
-      ? (product.reviews.filter(review => review.rating === rating).length / product.reviews.length) * 100
+    count: product?.reviews?.filter(review => review.rating === rating).length,
+    percentage: product?.reviews?.length > 0
+      ? (product?.reviews?.filter(review => review.rating === rating).length / product?.reviews?.length) * 100
       : 0
   }))
 
-  const displayedReviews = showAllReviews ? product.reviews : product.reviews.slice(0, 3)
+  const displayedReviews = showAllReviews ? product?.reviews : product?.reviews?.slice(0, 3)
 
   return (
     <div className="space-y-6">
@@ -46,14 +46,14 @@ export function ProductReviews({ product }: ProductReviewsProps) {
                   <Star
                     key={i}
                     className={`h-6 w-6 ${i < Math.floor(averageRating)
-                        ? 'text-yellow-400 fill-current'
-                        : 'text-gray-300'
+                      ? 'text-yellow-400 fill-current'
+                      : 'text-gray-300'
                       }`}
                   />
                 ))}
               </div>
               <p className="text-gray-600">
-                Based on {product.reviews.length} reviews
+                Based on {product?.reviews?.length} reviews
               </p>
             </div>
 
@@ -83,11 +83,11 @@ export function ProductReviews({ product }: ProductReviewsProps) {
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center">
                       <span className="text-rose-600 font-medium">
-                        {review.user.name[0].toUpperCase()}
+                        {review?.user?.name && review?.user?.name[0].toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium">{review.user.name}</p>
+                      <p className="font-medium">{review?.user?.name}</p>
                       <p className="text-sm text-gray-600">
                         {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true })}
                       </p>
@@ -98,8 +98,8 @@ export function ProductReviews({ product }: ProductReviewsProps) {
                       <Star
                         key={i}
                         className={`h-4 w-4 ${i < review.rating
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-gray-300'
                           }`}
                       />
                     ))}
