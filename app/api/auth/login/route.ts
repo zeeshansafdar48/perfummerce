@@ -1,33 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { login } from '@/lib/auth'
-import { z } from 'zod'
+import { NextRequest, NextResponse } from "next/server";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6)
-})
+export async function POST(req: NextRequest) {
+  const { email, password } = await req.json();
+  const supabase = createRouteHandlerClient({ cookies });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { email, password } = loginSchema.parse(body)
-
-    const result = await login(email, password)
-
-    return NextResponse.json(result)
-  } catch (error) {
-    console.error('Login error:', error)
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid input data' },
-        { status: 400 }
-      )
-    }
-    
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Login failed' },
-      { status: 401 }
-    )
+  if (error || !data.session) {
+    return NextResponse.json({ error: error?.message || "Invalid credentials" }, { status: 401 });
   }
+
+  // The auth-helpers will automatically set the session cookie
+  return NextResponse.json({ success: true });
 }
