@@ -17,7 +17,16 @@ interface CartItem {
 
 interface CartStore {
   items: CartItem[];
-  addItem: (product: { brand: { name: string }; category: { name: string } }) => void;
+  addItem: (product: {
+    id: string;
+    name: string;
+    price: number;
+    images: { url: string }[];
+    description: string;
+    slug: string;
+    brand: { name: string };
+    category: { name: string };
+  }) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -25,10 +34,11 @@ interface CartStore {
   getTotalPrice: () => number;
 }
 
-export const useCartStore = create<CartStore>()(
+export const useCartStore = create<CartStore & { hydrated: boolean }>()(
   persist(
     (set, get) => ({
       items: [],
+      hydrated: false,
       addItem: (product) => {
         const items = get().items;
         const existingItem = items.find((item) => item.product.id === product.id);
@@ -64,7 +74,10 @@ export const useCartStore = create<CartStore>()(
         get().items.reduce((total, item) => total + item.product.price * item.quantity, 0)
     }),
     {
-      name: "cart-store"
+      name: "cart-store",
+      onRehydrateStorage: () => (state) => {
+        state && (state.hydrated = true)
+      }
     }
   )
 );

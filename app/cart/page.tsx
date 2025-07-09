@@ -8,9 +8,14 @@ import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/currency'
+import LoadingCartPage from './loading'
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } = useCartStore()
+  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems, hydrated } = useCartStore()
+
+  if (!hydrated) {
+    return <LoadingCartPage />
+  }
 
   if (items.length === 0) {
     return (
