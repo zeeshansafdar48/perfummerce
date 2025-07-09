@@ -17,6 +17,7 @@ import { Truck, CreditCard } from 'lucide-react'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import { formatCurrency } from '@/lib/currency'
+import LoadingCheckoutPage from './loading'
 
 const checkoutSchema = z.object({
   customerName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -33,7 +34,7 @@ type CheckoutFormData = z.infer<typeof checkoutSchema>
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { items, getTotalPrice, getTotalItems, clearCart } = useCartStore()
+  const { items, getTotalPrice, getTotalItems, clearCart, hydrated } = useCartStore()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
@@ -50,6 +51,10 @@ export default function CheckoutPage() {
   })
 
   const paymentMethod = watch('paymentMethod')
+
+  if (!hydrated) {
+    return <LoadingCheckoutPage />
+  }
 
   if (items.length === 0) {
     router.push('/cart')
@@ -269,7 +274,7 @@ export default function CheckoutPage() {
                     <div key={item.product.id} className="flex items-center space-x-3">
                       <div className="relative w-12 h-12 rounded-lg overflow-hidden">
                         <Image
-                          src={item.product.images[0] || '/placeholder-perfume.jpg'}
+                          src={item.product.images[0]?.url || '/placeholder-perfume.jpg'}
                           alt={item.product.name}
                           fill
                           className="object-cover"
@@ -301,19 +306,19 @@ export default function CheckoutPage() {
                     <span>Subtotal ({getTotalItems()} items)</span>
                     <span>{formatCurrency(subtotal)}</span>
                   </div>
-                  
+
                   <div className="flex justify-between">
                     <span>Shipping</span>
                     <span>{shipping === 0 ? 'FREE' : formatCurrency(shipping)}</span>
                   </div>
-                  
+
                   <div className="flex justify-between">
                     <span>Tax</span>
                     <span>{formatCurrency(tax)}</span>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
                     <span>{formatCurrency(total)}</span>
