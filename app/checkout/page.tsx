@@ -27,7 +27,7 @@ const checkoutSchema = z.object({
   shippingCity: z.string().min(2, 'City is required'),
   shippingState: z.string().min(2, 'State is required'),
   shippingZip: z.string().min(5, 'ZIP code must be at least 5 characters'),
-  paymentMethod: z.enum(['COD', 'JAZZCASH'])
+  paymentMethod: z.enum(['COD'])
 })
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>
@@ -233,7 +233,7 @@ export default function CheckoutPage() {
               <CardContent>
                 <RadioGroup
                   value={paymentMethod}
-                  onValueChange={(value) => setValue('paymentMethod', value as 'COD' | 'JAZZCASH')}
+                  onValueChange={(value) => setValue('paymentMethod', value as 'COD')}
                 >
                   <div className="flex items-center space-x-2 p-4 border rounded-lg">
                     <RadioGroupItem value="COD" id="cod" />
@@ -246,7 +246,8 @@ export default function CheckoutPage() {
                     </Label>
                   </div>
 
-                  <div className="flex items-center space-x-2 p-4 border rounded-lg">
+                  {/* TODO: Uncomment if you want to add JazzCash option later */}
+                  {/* <div className="flex items-center space-x-2 p-4 border rounded-lg">
                     <RadioGroupItem value="JAZZCASH" id="jazzcash" />
                     <Label htmlFor="jazzcash" className="flex items-center space-x-2 cursor-pointer">
                       <CreditCard className="h-5 w-5 text-blue-600" />
@@ -255,7 +256,7 @@ export default function CheckoutPage() {
                         <div className="text-sm text-gray-600">Pay securely with JazzCash</div>
                       </div>
                     </Label>
-                  </div>
+                  </div> */}
                 </RadioGroup>
               </CardContent>
             </Card>
