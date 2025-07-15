@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabaseClient'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email'),
@@ -40,7 +41,12 @@ export default function LoginPage() {
         body: JSON.stringify(data)
       })
       const result = await res.json()
+      console.log("==> ~ onSubmit ~ result:", result)
       if (!res.ok) throw new Error(result.error || 'Invalid credentials')
+      // Hydrate client-side supabase with session
+      if (result.session) {
+        await supabase.auth.setSession(result.session)
+      }
       toast.success('Login successful!')
       router.push('/')
     } catch (error: any) {

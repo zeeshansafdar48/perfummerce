@@ -34,7 +34,7 @@ export function Header() {
 
   // Check user login state
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null))
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })

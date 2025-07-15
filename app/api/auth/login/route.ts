@@ -11,6 +11,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error?.message || "Invalid credentials" }, { status: 401 });
   }
 
-  // The auth-helpers will automatically set the session cookie
-  return NextResponse.json({ success: true });
+  // Return session and user for client hydration
+  return NextResponse.json({ success: true, session: data.session, user: data.user });
 }
