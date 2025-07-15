@@ -1,17 +1,28 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { Search, ShoppingBag, User, Menu, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Search, ShoppingBag, User, Menu, X, LogIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useCartStore } from '@/lib/store'
 import { Badge } from '@/components/ui/badge'
+import { supabase } from '@/lib/supabaseClient'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator
+} from '@/components/ui/dropdown-menu'
+import { useRouter } from 'next/navigation'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [user, setUser] = useState<any>(null)
   const totalItems = useCartStore((state) => state.getTotalItems())
+  const router = useRouter()
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -21,11 +32,27 @@ export function Header() {
     // { name: 'Unisex', href: '/products?gender=UNISEX' },
   ]
 
+  // Check user login state
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => { listener?.subscription.unsubscribe() }
+  }, [])
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`
     }
+  }
+
+  // Logout handler
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    router.push('/login')
   }
 
   return (
@@ -68,11 +95,28 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/account">
-              <Button variant="ghost" size="sm">
-                <User className="h-5 w-5" />
-              </Button>
-            </Link>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/account">Account</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/login">
+                <Button variant="ghost" size="sm">
+                  <LogIn className="h-5 w-5" />
+                </Button>
+              </Link>
+            )}
             <Link href="/cart" className="relative">
               <Button variant="ghost" size="sm">
                 <ShoppingBag className="h-5 w-5" />
@@ -127,12 +171,30 @@ export function Header() {
               ))}
             </nav>
             <div className="flex items-center space-x-4 mt-4 px-3">
-              <Link href="/account">
-                <Button variant="ghost" size="sm">
-                  <User className="h-5 w-5 mr-2" />
-                  Account
-                </Button>
-              </Link>
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      <User className="h-5 w-5 mr-2" />
+                      Account
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link href="/account">Account</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link href="/login">
+                  <Button variant="ghost" size="sm">
+                    <LogIn className="h-5 w-5 mr-2" />
+                    Login
+                  </Button>
+                </Link>
+              )}
               <Link href="/cart" className="relative">
                 <Button variant="ghost" size="sm">
                   <ShoppingBag className="h-5 w-5 mr-2" />
