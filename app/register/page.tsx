@@ -43,6 +43,11 @@ export default function RegisterPage() {
         password: data.password
       })
       if (authError || !authData.user) throw new Error(authError?.message || 'Registration failed')
+      // Hydrate client-side supabase with session (for instant login)
+      if (authData.session) {
+        const { error: setSessionError } = await supabase.auth.setSession(authData.session)
+        if (setSessionError) throw new Error(setSessionError.message)
+      }
 
       // Wait for session (user is authenticated)
       let sessionUserId = authData.user.id
