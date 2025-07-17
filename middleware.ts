@@ -7,7 +7,8 @@ export async function middleware(req: NextRequest) {
   const {
     data: { user }
   } = await supabase.auth.getUser();
-  if (req.nextUrl.pathname.startsWith("/orders") || req.nextUrl.pathname.startsWith("/admin")) {
+  // if (req.nextUrl.pathname.startsWith("/orders") || req.nextUrl.pathname.startsWith("/admin")) {
+  if (req.nextUrl.pathname.startsWith("/admin")) {
     if (!user) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
@@ -16,5 +17,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/checkout/:path*", "/orders/:path*", "/admin/:path*"]
+  // matcher: ["/orders/:path*", "/admin/:path*"]
+  matcher: ["/admin/:path*"]
 };
