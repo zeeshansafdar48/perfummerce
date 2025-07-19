@@ -1,3 +1,4 @@
+'use client'
 // Third-party imports
 import { useState } from 'react'
 import Image from 'next/image'

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 // Helper imports
 import { fetchProducts } from '@/lib/supabase/products'
 import { fetchCategories } from '@/lib/supabase/categories'
+import { formatCurrency } from '@/lib/currency'
 
 /**
  * Home page for Perfume E-commerce
@@ -72,7 +73,7 @@ export default async function Home() {
                 </div>
               </div>
               <h3 className="text-lg font-semibold mb-2">Free Shipping</h3>
-              <p className="text-gray-600">Free shipping on orders over PKR 3,000</p>
+              <p className="text-gray-600">Free shipping on orders over {formatCurrency(3000)}</p>
             </div>
 
             <div className="text-center">

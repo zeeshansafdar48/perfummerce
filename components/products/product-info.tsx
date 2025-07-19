@@ -13,20 +13,30 @@ import { Separator } from '@/components/ui/separator'
 import { useCartStore } from '@/lib/store'
 import { toast } from 'sonner'
 import { formatCurrency } from '@/lib/currency'
+import { fetchProductsReviews } from '@/lib/supabase/products'
 
 // Types
 interface ProductInfoProps {
   product: {
-    name: string
-    brand: { name: string }
-    category: { name: string }
-    reviews: { rating: number; user: { name: string } }[]
-    price: number
-    comparePrice?: number
+    id: string;
+    name: string;
+    price: number;
+    images: {
+      url: string;
+    }[];
+    description: string;
+    slug: string;
+    brand: {
+      name: string;
+    };
+    category: {
+      name: string;
+    };
+    comparePrice?: number;
     stock?: number
     gender?: string
-    description?: string
-  }
+    reviews: { rating: number; user: { name: string } }[]
+  },
 }
 
 /**
@@ -35,6 +45,7 @@ interface ProductInfoProps {
  * @param {object} props.product - Product object
  */
 export function ProductInfo({ product }: ProductInfoProps) {
+  console.log("==> ~ ProductInfo ~ product:", product)
   // State
   const [quantity, setQuantity] = useState(1)
   // Custom hooks
@@ -160,10 +171,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
             Add to Cart
           </Button>
 
-          <Button variant="outline" className="flex-1" aria-label="Add to wishlist">
-            <Heart className="h-5 w-5 mr-2" />
-            Add to Wishlist
-          </Button>
         </div>
       </div>
 
@@ -175,7 +182,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <Truck className="h-5 w-5 text-rose-600" aria-label="Free shipping" />
-            <span className="text-sm">Free shipping on orders over {formatCurrency(100)}</span>
+            <span className="text-sm">Free shipping on orders over {formatCurrency(3000)}</span>
           </div>
           <div className="flex items-center gap-3">
             <Shield className="h-5 w-5 text-rose-600" aria-label="Authentic products" />
@@ -183,7 +190,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           </div>
           <div className="flex items-center gap-3">
             <RotateCcw className="h-5 w-5 text-rose-600" aria-label="Return policy" />
-            <span className="text-sm">30-day return policy</span>
+            <span className="text-sm">7-day return policy</span>
           </div>
         </div>
       </div>
