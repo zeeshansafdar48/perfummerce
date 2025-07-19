@@ -32,6 +32,17 @@ These guidelines help Copilot generate high-quality, maintainable code for **Rea
 - Use **PropTypes** or **TypeScript** for type safety.
 - Organize components in a **clear folder structure** (e.g., `/components`, `/hooks`, `/pages`).
 
+- Use following best practices for React components Structure:
+  - Third-party libraries and React/Next imports should be imported at the top then empty line.
+  - Component imports should follow, grouped by type (e.g., shared components, specific components) then empty line.
+  - Any helper functions or utilities should be imported next, followed by an empty line.
+  - CSS Imports should be imported next, followed by an empty line.
+  - Constants and configuration variables should be imported next, followed by an empty line.
+  - In functional components, custom hooks should be on top
+  - Followed by the component's **state** and **effects**.
+  - Followed by the component's **functions**.
+  - Finally, the **return statement** of the component.
+
 ---
 
 ## ✅ Next.js (App Router) Best Practices

@@ -1,15 +1,25 @@
+// Third-party imports
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight, Star, Truck, Shield, Headphones } from 'lucide-react'
+
+// Component imports
 import { ProductCard } from '@/components/ui/product-card'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Star, Truck, Shield, Headphones } from 'lucide-react'
-import Link from 'next/link'
-import Image from 'next/image'
+
+// Helper imports
 import { fetchProducts } from '@/lib/supabase/products'
 import { fetchCategories } from '@/lib/supabase/categories'
 
+/**
+ * Home page for Perfume E-commerce
+ * - Shows hero, features, categories, featured products, testimonials
+ * - Follows project coding standards and best practices
+ */
 export default async function Home() {
   const products = await fetchProducts();
   const categories = await fetchCategories();
-  const featuredProducts = products.filter(p => p.featured);
+  const featuredProducts = products.filter((p) => p.featured === true);
   const isShowCategorySection = false;
 
   return (
@@ -19,7 +29,7 @@ export default async function Home() {
         <div className="absolute inset-0">
           <Image
             src="https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg"
-            alt="Luxury perfume bottles"
+            alt="Luxury perfume bottles on display"
             fill
             className="object-cover"
             priority
@@ -58,7 +68,7 @@ export default async function Home() {
             <div className="text-center">
               <div className="flex justify-center mb-4">
                 <div className="bg-rose-100 p-3 rounded-full">
-                  <Truck className="h-8 w-8 text-rose-600" />
+                  <Truck className="h-8 w-8 text-rose-600" aria-label="Free Shipping" />
                 </div>
               </div>
               <h3 className="text-lg font-semibold mb-2">Free Shipping</h3>
@@ -68,7 +78,7 @@ export default async function Home() {
             <div className="text-center">
               <div className="flex justify-center mb-4">
                 <div className="bg-rose-100 p-3 rounded-full">
-                  <Shield className="h-8 w-8 text-rose-600" />
+                  <Shield className="h-8 w-8 text-rose-600" aria-label="Authentic Products" />
                 </div>
               </div>
               <h3 className="text-lg font-semibold mb-2">Authentic Products</h3>
@@ -78,7 +88,7 @@ export default async function Home() {
             <div className="text-center">
               <div className="flex justify-center mb-4">
                 <div className="bg-rose-100 p-3 rounded-full">
-                  <Headphones className="h-8 w-8 text-rose-600" />
+                  <Headphones className="h-8 w-8 text-rose-600" aria-label="24/7 Support" />
                 </div>
               </div>
               <h3 className="text-lg font-semibold mb-2">24/7 Support</h3>
@@ -89,39 +99,41 @@ export default async function Home() {
       </section>
 
       {/* Categories Section */}
-      {isShowCategorySection && <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              From eau de parfum to cologne, discover the perfect fragrance intensity for every occasion
-            </p>
-          </div>
+      {isShowCategorySection && (
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                From eau de parfum to cologne, discover the perfect fragrance intensity for every occasion
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                href={`/products?category=${category.name}`}
-                className="group"
-              >
-                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                  <div className="aspect-square bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center">
-                    <div className="text-4xl font-bold text-rose-600">
-                      {category.name[0]}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/products?category=${category.name}`}
+                  className="group"
+                >
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div className="aspect-square bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center">
+                      <div className="text-4xl font-bold text-rose-600">
+                        {category.name[0]}
+                      </div>
+                    </div>
+                    <div className="p-4 text-center">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-rose-600 transition-colors">
+                        {category.name}
+                      </h3>
                     </div>
                   </div>
-                  <div className="p-4 text-center">
-                    <h3 className="font-semibold text-gray-900 group-hover:text-rose-600 transition-colors">
-                      {category.name}
-                    </h3>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>}
+        </section>
+      )}
 
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
@@ -134,7 +146,7 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts?.map((product: any) => (
+            {featuredProducts?.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
@@ -189,5 +201,5 @@ export default async function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
