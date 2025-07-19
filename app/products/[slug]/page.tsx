@@ -48,7 +48,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const reviews = await fetchProductsReviews(product?.id);
-  console.log("==> ~ ProductPage ~ reviews:", reviews)
   // Get related products
   const relatedProducts = products.filter(p => p.id !== product?.id && (p?.brand?.id === product?.brand?.id || p?.category?.id === product?.category?.id));
 
@@ -59,8 +58,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Product Gallery */}
         <ProductGallery images={product.images} productName={product.name} />
         {/* Product Info */}
-        {/* <ProductInfo product={product} reviews={reviews} /> */}
-        <ProductInfo product={product} />
+        <ProductInfo product={product} reviews={reviews} />
       </div>
       {/* Product Reviews */}
       {/* <ProductReviews product={product} /> */}

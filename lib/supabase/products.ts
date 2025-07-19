@@ -10,7 +10,7 @@ export async function fetchProducts() {
 
 export async function fetchProductsReviews(productId: string) {
   const { data, error } = await supabase
-    .from("products_reviews")
+    .from("product_reviews")
     .select("*")
     .eq("product_id", productId);
   if (error) throw error;

@@ -35,8 +35,8 @@ interface ProductInfoProps {
     comparePrice?: number;
     stock?: number
     gender?: string
-    reviews: { rating: number; user: { name: string } }[]
   },
+  reviews: { rating: number; }[]
 }
 
 /**
@@ -44,8 +44,7 @@ interface ProductInfoProps {
  * @param {Object} props
  * @param {object} props.product - Product object
  */
-export function ProductInfo({ product }: ProductInfoProps) {
-  console.log("==> ~ ProductInfo ~ product:", product)
+export function ProductInfo({ product, reviews }: ProductInfoProps) {
   // State
   const [quantity, setQuantity] = useState(1)
   // Custom hooks
@@ -62,8 +61,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
   }
 
   // Derived values
-  const averageRating = product?.reviews?.length > 0
-    ? product?.reviews?.reduce((sum, review) => sum + review.rating, 0) / product?.reviews?.length
+  const averageRating = reviews?.length > 0
+    ? reviews?.reduce((sum, review) => sum + review.rating, 0) / reviews?.length
     : 0
   const discountPercentage = product?.comparePrice
     ? Math.round(((product?.comparePrice - product?.price) / product?.comparePrice) * 100)
@@ -93,7 +92,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             ))}
           </div>
           <span className="text-sm text-gray-600">
-            {averageRating?.toFixed(1)} ({product?.reviews?.length} reviews)
+            {averageRating?.toFixed(1)} ({reviews?.length} reviews)
           </span>
         </div>
       </div>
