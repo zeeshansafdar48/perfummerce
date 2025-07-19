@@ -33,7 +33,7 @@ export default async function Home() {
             <span className="block text-rose-400">Perfect Perfume</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-200">
-            Explore our curated collection of premium fragrances from the world's finest brands
+            Explore our curated collection of premium fragrances from the world&apos;s finest brands
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-rose-600 hover:bg-rose-700">
@@ -62,7 +62,7 @@ export default async function Home() {
                 </div>
               </div>
               <h3 className="text-lg font-semibold mb-2">Free Shipping</h3>
-              <p className="text-gray-600">Free shipping on orders over $100</p>
+              <p className="text-gray-600">Free shipping on orders over PKR 3,000</p>
             </div>
 
             <div className="text-center">
@@ -129,7 +129,7 @@ export default async function Home() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Products</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover our handpicked selection of premium fragrances from the world's most prestigious brands
+              Discover our handpicked selection of premium fragrances from the world&apos;s most prestigious brands
             </p>
           </div>
 
@@ -181,7 +181,7 @@ export default async function Home() {
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-4">"{testimonial.text}"</p>
+                <p className="text-gray-600 mb-4">&quot;{testimonial.text}&quot;</p>
                 <p className="font-semibold text-gray-900">- {testimonial.name}</p>
               </div>
             ))}
