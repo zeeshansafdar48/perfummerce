@@ -33,11 +33,13 @@ These guidelines help Copilot generate high-quality, maintainable code for **Rea
 - Organize components in a **clear folder structure** (e.g., `/components`, `/hooks`, `/pages`).
 
 - Use following best practices for React components Structure:
+  - add "use client" at the top of the file if the component is a client component.
   - Third-party libraries and React/Next imports should be imported at the top then empty line.
   - Component imports should follow, grouped by type (e.g., shared components, specific components) then empty line.
   - Any helper functions or utilities should be imported next, followed by an empty line.
   - CSS Imports should be imported next, followed by an empty line.
   - Constants and configuration variables should be imported next, followed by an empty line.
+  - Add interfaces or types for props after the imports.
   - In functional components, custom hooks should be on top
   - Followed by the component's **state** and **effects**.
   - Followed by the component's **functions**.

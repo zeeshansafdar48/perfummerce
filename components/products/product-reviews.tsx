@@ -1,33 +1,44 @@
-'use client'
+"use client"
 
+// Third-party imports
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { Star, ThumbsUp } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 
+// Component imports
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+
+// Types
 interface ProductReviewsProps {
   product: any
 }
 
+/**
+ * ProductReviews displays customer reviews, rating summary, and review breakdown for a product.
+ * @param {Object} props
+ * @param {any} props.product - Product object with reviews
+ */
 export function ProductReviews({ product }: ProductReviewsProps) {
+  // State
   const [showAllReviews, setShowAllReviews] = useState(false)
 
+  // Derived values
+  type Review = { rating: number; user: { name: string }; id: string; comment: string; createdAt: string }
   const averageRating = product?.reviews?.length > 0
-    ? product.reviews.reduce((sum, review) => sum + review.rating, 0) / product?.reviews?.length
+    ? (product.reviews as Review[]).reduce((sum: number, review: Review) => sum + review.rating, 0) / product?.reviews?.length
     : 0
-
   const ratingDistribution = [5, 4, 3, 2, 1].map(rating => ({
     rating,
-    count: product?.reviews?.filter(review => review.rating === rating).length,
+    count: (product?.reviews as Review[])?.filter((review: Review) => review.rating === rating).length,
     percentage: product?.reviews?.length > 0
-      ? (product?.reviews?.filter(review => review.rating === rating).length / product?.reviews?.length) * 100
+      ? ((product?.reviews as Review[]).filter((review: Review) => review.rating === rating).length / product?.reviews?.length) * 100
       : 0
   }))
+  const displayedReviews = showAllReviews ? (product?.reviews as Review[]) : (product?.reviews as Review[])?.slice(0, 3)
 
-  const displayedReviews = showAllReviews ? product?.reviews : product?.reviews?.slice(0, 3)
-
+  // Render
   return (
     <div className="space-y-6">
       <Card>
@@ -41,14 +52,12 @@ export function ProductReviews({ product }: ProductReviewsProps) {
               <div className="text-4xl font-bold text-gray-900 mb-2">
                 {averageRating.toFixed(1)}
               </div>
-              <div className="flex justify-center mb-2">
+              <div className="flex justify-center mb-2" aria-label="Average rating">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-6 w-6 ${i < Math.floor(averageRating)
-                      ? 'text-yellow-400 fill-current'
-                      : 'text-gray-300'
-                      }`}
+                    className={`h-6 w-6 ${i < Math.floor(averageRating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                    aria-hidden={i >= Math.floor(averageRating)}
                   />
                 ))}
               </div>
@@ -65,6 +74,7 @@ export function ProductReviews({ product }: ProductReviewsProps) {
                     <div
                       className="h-full bg-yellow-400 transition-all duration-300"
                       style={{ width: `${percentage}%` }}
+                      aria-label={`${percentage.toFixed(0)}% of reviews are ${rating} stars`}
                     />
                   </div>
                   <span className="text-sm text-gray-600 w-8">{count}</span>
@@ -77,7 +87,7 @@ export function ProductReviews({ product }: ProductReviewsProps) {
 
           {/* Individual Reviews */}
           <div className="space-y-6">
-            {displayedReviews.map((review) => (
+            {displayedReviews.map((review: Review) => (
               <div key={review.id} className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -93,14 +103,12 @@ export function ProductReviews({ product }: ProductReviewsProps) {
                       </p>
                     </div>
                   </div>
-                  <div className="flex">
+                  <div className="flex" aria-label={`Rating: ${review.rating} out of 5`}>
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`h-4 w-4 ${i < review.rating
-                          ? 'text-yellow-400 fill-current'
-                          : 'text-gray-300'
-                          }`}
+                        className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                        aria-hidden={i >= review.rating}
                       />
                     ))}
                   </div>
@@ -109,7 +117,7 @@ export function ProductReviews({ product }: ProductReviewsProps) {
                 <p className="text-gray-700">{review.comment}</p>
 
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm" className="text-gray-600">
+                  <Button variant="ghost" size="sm" className="text-gray-600" aria-label="Mark review as helpful">
                     <ThumbsUp className="h-4 w-4 mr-1" />
                     Helpful
                   </Button>
@@ -126,6 +134,7 @@ export function ProductReviews({ product }: ProductReviewsProps) {
               <Button
                 variant="outline"
                 onClick={() => setShowAllReviews(!showAllReviews)}
+                aria-label={showAllReviews ? 'Show less reviews' : 'Show all reviews'}
               >
                 {showAllReviews ? 'Show Less' : `Show All ${product.reviews.length} Reviews`}
               </Button>
