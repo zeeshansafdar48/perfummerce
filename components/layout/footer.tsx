@@ -12,7 +12,7 @@ export function Footer() {
               Parfum<span className="text-rose-400">.</span>
             </div>
             <p className="text-gray-300 text-sm">
-              Discover the world's finest fragrances. From classic elegance to modern sophistication, we bring you the perfect scent for every moment.
+              Discover the world&apos;s finest fragrances. From classic elegance to modern sophistication, we bring you the perfect scent for every moment.
             </p>
             <div className="flex space-x-4">
               <Link href="#" className="text-gray-400 hover:text-rose-400 transition-colors">
@@ -38,12 +38,12 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/products?gender=MEN" className="text-gray-300 hover:text-white transition-colors">
-                  Men's Fragrances
+                  Men&apos;s Fragrances
                 </Link>
               </li>
               <li>
                 <Link href="/products?gender=WOMEN" className="text-gray-300 hover:text-white transition-colors">
-                  Women's Fragrances
+                  Women&apos;s Fragrances
                 </Link>
               </li>
               <li>

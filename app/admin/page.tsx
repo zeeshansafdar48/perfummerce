@@ -1,4 +1,3 @@
-import { getCurrentUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -13,9 +12,6 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-react'
-import Order from '@/models/Order'
-import Product from '@/models/Product'
-// import dbConnect from '@/lib/mongodb' // Commented out for dummy data
 
 export default async function AdminDashboard() {
   // Dummy data for demo/testing only
