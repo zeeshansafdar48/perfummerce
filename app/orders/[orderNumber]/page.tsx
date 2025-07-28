@@ -14,6 +14,8 @@ export default async function OrderDetailPage({ params }: { params: { orderNumbe
   console.log("==> ~ OrderDetailPage ~ order:", order)
   if (!order) return notFound()
 
+  const { email, full_name, phone } = order.user_profiles || {};
+
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Card>
@@ -24,9 +26,9 @@ export default async function OrderDetailPage({ params }: { params: { orderNumbe
           <div>
             <h2 className="text-lg font-semibold mb-2">Order Details</h2>
             <div className="space-y-2">
-              <div><span className="font-medium">Customer:</span> {order.customerName}</div>
-              <div><span className="font-medium">Email:</span> {order.customerEmail}</div>
-              <div><span className="font-medium">Phone:</span> {order.customerPhone}</div>
+              <div><span className="font-medium">Customer:</span> {full_name}</div>
+              <div><span className="font-medium">Email:</span> {email}</div>
+              <div><span className="font-medium">Phone:</span> {phone}</div>
               <div><span className="font-medium">Shipping Address:</span> {order.shipping_address}</div>
               <div><span className="font-medium">Payment Method:</span> {order.payment_method}</div>
               <div><span className="font-medium">Status:</span> <Badge>{order.status}</Badge></div>

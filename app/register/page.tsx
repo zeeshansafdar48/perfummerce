@@ -60,7 +60,8 @@ export default function RegisterPage() {
           id: sessionUserId,
           full_name: data.fullName,
           phone: data.phone,
-          is_admin: false
+          is_admin: false,
+          email: data.email
         })
       }).then(res => res.json())
       if (profileError) {

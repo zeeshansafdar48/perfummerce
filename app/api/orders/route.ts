@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
     const order = await createOrderWithUser(data);
     return NextResponse.json(order, { status: 201 });
   } catch (error: any) {
+    console.log("==> ~ POST ~ error:", error);
     return NextResponse.json({ error: error.message || "Failed to create order" }, { status: 500 });
   }
 }
