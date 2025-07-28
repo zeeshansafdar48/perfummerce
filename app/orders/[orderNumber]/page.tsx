@@ -40,7 +40,7 @@ export default async function OrderDetailPage({ params }: { params: { orderNumbe
               {order?.order_items?.map((item: any) => (
                 <div key={item.product_id} className="flex items-center space-x-3">
                   <div className="relative w-12 h-12 rounded-lg overflow-hidden">
-                    <Image src={item.imageUrl || '/placeholder-perfume.jpg'} alt={item.name} fill className="object-cover" />
+                    <Image src={item.product_images?.[0]?.url || '/placeholder-perfume.jpg'} alt={item.name} fill className="object-cover" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="text-sm font-medium text-gray-900">{item.name}</h4>

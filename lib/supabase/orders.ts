@@ -23,10 +23,41 @@ export async function getOrderByNumber(orderNumber: string) {
   // Get order and its items in one query
   const { data: order, error: orderError } = await adminSupabase
     .from("orders")
-    .select("*, order_items(*), user_profiles(*)")
+    .select(`*, order_items(*), user_profiles(*)`)
     .eq("order_number", orderNumber)
     .single();
   if (orderError) return null;
+
+  // Step 2: Extract unique product_ids
+  const productIds = order.order_items.map((item: { product_id: string }) => item.product_id);
+
+  // Step 3: Fetch product_images for these productIds
+  const { data: productImages, error: imagesError } = await adminSupabase
+    .from("product_images")
+    .select("*")
+    .in("product_id", productIds);
+
+  if (imagesError) {
+    console.error(imagesError);
+    return;
+  }
+
+  // Step 4: Map images to order_items
+  const imagesByProductId: Record<string, any[]> = {};
+  productImages.forEach((img) => {
+    if (!imagesByProductId[img.product_id]) {
+      imagesByProductId[img.product_id] = [];
+    }
+    imagesByProductId[img.product_id].push(img);
+  });
+
+  order.order_items = order.order_items.map((item: { product_id: string }) => ({
+    ...item,
+    product_images: imagesByProductId[item.product_id] || []
+  }));
+
+  // Now `order.order_items` has a `product_images` array for each item
+  console.log(order);
   return order;
 }
 
