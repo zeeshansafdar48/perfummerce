@@ -14,119 +14,30 @@ import {
 } from 'lucide-react'
 
 export default async function AdminDashboard() {
-  // Dummy data for demo/testing only
-  const user = { name: 'Admin', role: 'ADMIN' };
+  // Statistics (replace with API calls)
   const stats = [
-    { title: 'Total Orders', value: 12, icon: ShoppingBag, color: 'bg-blue-100 text-blue-600' },
-    { title: 'Total Products', value: 3, icon: Package, color: 'bg-green-100 text-green-600' },
-    { title: 'Total Revenue', value: '$335.00', icon: DollarSign, color: 'bg-purple-100 text-purple-600' },
-    { title: 'Pending Orders', value: 2, icon: Clock, color: 'bg-yellow-100 text-yellow-600' },
-  ];
-  const recentOrders = [
-    { id: 'order1', orderNumber: '1001', customerName: 'Sarah Johnson', createdAt: new Date(), total: 120, status: 'DELIVERED' },
-    { id: 'order2', orderNumber: '1002', customerName: 'Michael Chen', createdAt: new Date(), total: 110, status: 'PENDING' },
-  ];
-  const lowStockProducts = [
-    { id: 'prod3', name: 'Gucci Bloom', brand: { name: 'Gucci' }, stock: 5 },
+    { title: "Total Orders", value: 120 },
+    { title: "Total Revenue", value: "$12,000" },
+    { title: "Total Users", value: 350 },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome back, {user.name}</p>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {stats.map((stat) => (
-          <Card key={stat.title}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                </div>
-                <div className={`p-3 rounded-full ${stat.color}`}>
-                  <stat.icon className="h-6 w-6" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <div key={stat.title} className="bg-white rounded-lg shadow p-4 flex items-center gap-4">
+            <div>
+              <div className="text-sm text-gray-500">{stat.title}</div>
+              <div className="text-2xl font-bold">{stat.value}</div>
+            </div>
+          </div>
         ))}
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Orders */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <ShoppingBag className="h-5 w-5 mr-2" />
-              Recent Orders
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentOrders.map((order) => (
-                <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div>
-                    <p className="font-medium">#{order.orderNumber}</p>
-                    <p className="text-sm text-gray-600">{order.customerName}</p>
-                    <p className="text-sm text-gray-500">
-                      {formatDistanceToNow(new Date(order.createdAt), { addSuffix: true })}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold">${order.total.toFixed(2)}</p>
-                    <Badge
-                      variant={
-                        order.status === 'DELIVERED' ? 'default' :
-                          order.status === 'PENDING' ? 'secondary' :
-                            'outline'
-                      }
-                    >
-                      {order.status}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Low Stock Products */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <AlertCircle className="h-5 w-5 mr-2 text-yellow-600" />
-              Low Stock Alert
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {lowStockProducts.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">
-                  All products are well stocked!
-                </p>
-              ) : (
-                lowStockProducts.map((product) => (
-                  <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-gray-600">{product.brand.name}</p>
-                    </div>
-                    <div className="text-right">
-                      <Badge variant="destructive">
-                        {product.stock} left
-                      </Badge>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="flex gap-4">
+        <a href="/admin/orders" className="px-4 py-2 bg-blue-600 text-white rounded shadow">Manage Orders</a>
+        <a href="/admin/users" className="px-4 py-2 bg-green-600 text-white rounded shadow">Manage Users</a>
       </div>
     </div>
-  )
+  );
 }

@@ -150,3 +150,11 @@ export async function createOrderWithUser(order: any) {
 
   return { orderNumber, id: orderData.id };
 }
+
+export async function getAllOrders() {
+  const { data, error } = await adminSupabase
+    .from("orders")
+    .select(`*, order_items(*), user_profiles(*)`);
+  if (error) throw error;
+  return data ?? [];
+}
